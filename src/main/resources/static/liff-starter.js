@@ -104,38 +104,6 @@ function displayIsInClientInfo() {
  * Register event handlers for the buttons displayed in the app
  */
 function registerButtonHandlers() {
-  // sendMessages call
-  document.getElementById('sendMessageButton').addEventListener('click', function () {
-    if (!liff.isInClient()) {
-      sendAlertIfNotInClient();
-    } else {
-      liff
-        .sendMessages([
-          {
-            type: 'text',
-            text: "You've successfully sent a message! Hooray!",
-          },
-        ])
-        .then(function () {
-          window.alert('Message sent');
-        })
-        .catch(function (error) {
-          window.alert('Error sending message: ' + error);
-        });
-    }
-  });
-
-  // get access token
-  document.getElementById('getAccessToken').addEventListener('click', function () {
-    if (!liff.isLoggedIn() && !liff.isInClient()) {
-      alert('To get an access token, you need to be logged in. Please tap the "login" button below and try again.');
-    } else {
-      const accessToken = liff.getAccessToken();
-      document.getElementById('accessTokenField').textContent = accessToken;
-      toggleAccessToken();
-    }
-  });
-
   // get profile call
   document.getElementById('getProfileButton').addEventListener('click', function () {
     liff
@@ -161,25 +129,6 @@ function registerButtonHandlers() {
       });
   });
 
-  document.getElementById('shareTargetPicker').addEventListener('click', function () {
-    if (liff.isApiAvailable('shareTargetPicker')) {
-      liff
-        .shareTargetPicker([
-          {
-            type: 'text',
-            text: 'Hello, World!',
-          },
-        ])
-        .then((document.getElementById('shareTargetPickerMessage').textContent = 'Share target picker was launched.'))
-        .catch(function (res) {
-          document.getElementById('shareTargetPickerMessage').textContent = 'Failed to launch share target picker.';
-        });
-    } else {
-      document.getElementById('shareTargetPickerMessage').innerHTML =
-        "<div>Share target picker unavailable.<div><div>This is possibly because you haven't enabled the share target picker on <a href='https://developers.line.biz/console/'>LINE Developers Console</a>.</div>";
-    }
-  });
-
   // login call, only when external browser is used
   document.getElementById('liffLoginButton').addEventListener('click', function () {
     if (!liff.isLoggedIn()) {
@@ -202,13 +151,6 @@ function registerButtonHandlers() {
  */
 function sendAlertIfNotInClient() {
   alert('This button is unavailable as LIFF is currently being opened in an external browser.');
-}
-
-/**
- * Toggle access token data field
- */
-function toggleAccessToken() {
-  toggleElement('accessTokenData');
 }
 
 /**
